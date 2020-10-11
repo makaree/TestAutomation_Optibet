@@ -1,0 +1,25 @@
+<suite name="MainSuite">
+  <test name="ChromeBrowserTest"> <classes>
+  <parameter name = "browser" value = "Chrome"></parameter>
+      <class name="SeleniumTests.SecurityTests"/>
+      <class name="SeleniumTests.UserInterfaceTests"/>
+      <class name="SeleniumTests.FunctionalityTests"/>
+    </classes>
+  </test>
+  
+  <test name="OperaBrowserTest"> <classes>
+  <parameter name = "browser" value = "Opera"></parameter>
+      <class name="SeleniumTests.SecurityTests"/>
+      <class name="SeleniumTests.UserInterfaceTests"/>
+      <class name="SeleniumTests.FunctionalityTests"/>
+    </classes>
+  </test>
+  
+  <test name="FireFoxBrowserTest"> <classes>
+  <parameter name = "browser" value = "FireFox"></parameter>
+      <class name="SeleniumTests.SecurityTests"/>
+      <class name="SeleniumTests.UserInterfaceTests"/>
+      <class name="SeleniumTests.FunctionalityTests"/>
+    </classes>
+  </test>
+</suite>  
