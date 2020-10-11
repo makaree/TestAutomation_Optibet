@@ -3,6 +3,7 @@ package Utils;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -85,6 +86,31 @@ public class Perform {
 	public static void OpenUrl(String Url) {
 		driver.get(Url);
 		driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * This method opens the url with IsoftBet category in the query and returns all
+	 * the games names present in this category
+	 */
+	public static String[] FindGameNamesInIsofbetCategory() {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		String scriptsection = "return document.querySelectorAll('#app > div.container___hBWrc-scss.oblt > main > div:nth-child(2) > div.page-content___3oo_o-scss.page-content_wide___1wN6X-scss.container___2stOa-scss > div')[0].";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		driver.navigate().to(Config.BaseURL + "casino/slots?filter=iSoftBet");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+				"#app > div.container___hBWrc-scss.oblt > main > div:nth-child(2) > div.page-content___3oo_o-scss.page-content_wide___1wN6X-scss.container___2stOa-scss > div")));
+		String counter = js.executeScript(scriptsection + "childElementCount;").toString();
+		int count = Integer.parseInt(counter);
+		String[] value = new String[count];
+		for (int i = 0; i < count; i++) {
+			value[i] = js.executeScript(scriptsection + "childNodes[" + i + "].innerText;").toString();
+			value[i] = value[i].substring(9, value[i].length());
+		}
+		MainPage mainPage = new MainPage(driver);
+		mainPage.OptibetIcon.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+				"#app > div.container___hBWrc-scss.oblt > main > div > div:nth-child(2) > div > div > div > div > div > div")));
+		return value;
 	}
 
 	/**
