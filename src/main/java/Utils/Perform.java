@@ -12,6 +12,7 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import PageObjects.CasinoPage;
 import PageObjects.LoginPageResponse;
 import PageObjects.LoginWindow;
 import PageObjects.MainPage;
@@ -29,7 +30,7 @@ public class Perform {
 	 * parameters
 	 */
 	public static void InitializeDriver(String browsername) {
-		browsername = browsername != null ? browsername : "FireFox";
+		browsername = browsername != null ? browsername : "Opera";
 		if (browsername.equals("Chrome")) {
 			try {
 				System.setProperty("webdriver.chrome.driver",
@@ -111,6 +112,79 @@ public class Perform {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
 				"#app > div.container___hBWrc-scss.oblt > main > div > div:nth-child(2) > div > div > div > div > div > div")));
 		return value;
+	}
+
+	/**
+	 * This method navigates to search button in Casino
+	 */
+	public static void GoToSearchButtonInCasino() {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		CasinoPage casinoPage = new CasinoPage(driver);
+		MainPage mainPage = new MainPage(driver);
+		mainPage.Casino.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/main")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+				"#app > div.container___hBWrc-scss.oblt > main > div:nth-child(2) > div.container___1OLFj-scss > div.categoryNav___cKdn8-scss > div > div > div > svg")));
+		casinoPage.SearchButton.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"casino-modal-container\"]/div")));
+		wait.until(ExpectedConditions
+				.visibilityOfElementLocated(By.xpath("//*[@id=\"casino-modal-container\"]/div/div/input")));
+	}
+
+	/**
+	 * This method finds the game passed in method to search button in Casino Page,
+	 * lunches it and return the title of lunched game
+	 */
+	public static String FindAndLunchGame(String gameName) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		CasinoPage casinoPage = new CasinoPage(driver);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		casinoPage.InputField.click();
+		casinoPage.InputField.sendKeys(gameName);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.cssSelector("#casino-modal-container > div > div > div.result___3X9jF-scss")));
+		wait.until(ExpectedConditions
+				.visibilityOfElementLocated(By.xpath("//*[@id=\"casino-modal-container\"]/div/div/div[2]/div[1]")));
+		String searchresultnos_str = js.executeScript(
+				"return document.querySelectorAll('#casino-modal-container > div > div > div.result___3X9jF-scss')[0].childElementCount;")
+				.toString();
+		int searchresultnos_int = Integer.parseInt(searchresultnos_str);
+		int k = 0;
+		String[] findgameName = new String[searchresultnos_int];
+		String modifygameName = gameName;
+		for (int j = 0; j < searchresultnos_int; j++) {
+			findgameName[j] = js.executeScript(
+					"return document.querySelectorAll('#casino-modal-container > div > div > div.result___3X9jF-scss')[0].childNodes["
+							+ j + "].children[0].pathname;")
+					.toString();
+			findgameName[j] = findgameName[j].substring(17, findgameName[j].length());
+			findgameName[j] = findgameName[j].replace("-", "");
+
+			modifygameName = modifygameName.toLowerCase();
+			modifygameName = modifygameName.replace(" ", "");
+			modifygameName = modifygameName.replace("'", "");
+			System.out.println(modifygameName);
+			System.out.println(findgameName[j]);
+			if (findgameName[j].equals(modifygameName)) {
+				System.out.println(modifygameName);
+				System.out.println(findgameName[j]);
+				k = j + 1;
+				System.out.println(k);
+			}
+		}
+		driver.findElement(By.xpath("//*[@id=\"casino-modal-container\"]/div/div/div[2]/div[" + k + "]")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+				"#app > div.container___hBWrc-scss.oblt > main > div > div > div.container___1jlW--scss > div > div > svg > path")));
+		String getgameNamefromLuncher = casinoPage.LunchedGameTitle.getText();
+
+//		try {
+//			Thread.sleep(500);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		casinoPage.LunchedGameCloseButton.click();
+		return getgameNamefromLuncher;
 	}
 
 	/**

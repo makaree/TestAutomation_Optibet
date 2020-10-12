@@ -47,7 +47,9 @@ public class CasinoPage {
 	public WebElement LunchedGameWindow;
 
 	/// This element find the close button in the Window of the lunched game
-	@FindBy(css = "#app > div.container___hBWrc-scss.oblt > main > div > div > div.container___1jlW--scss > div > div > svg > path")
+	@FindBy(css = "#app > div.container___hBWrc-scss.oblt > main > div > div > div.container___1jlW--scss > div > div > svg")
 	public WebElement LunchedGameCloseButton;
+	// #app > div.container___hBWrc-scss.oblt > main > div > div >
+	// div.container___1jlW--scss > div > div > svg
 
 }

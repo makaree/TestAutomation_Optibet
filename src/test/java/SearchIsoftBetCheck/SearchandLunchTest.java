@@ -1,5 +1,6 @@
 package SearchIsoftBetCheck;
 
+import org.testng.AssertJUnit;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -23,9 +24,9 @@ public class SearchandLunchTest extends ParentTestClass {
 	@Test(dataProvider = "IsoftGameNames", groups = {
 			"stable" }, description = "This test checks the login function with valid username and valid password. It then verifies the valid login response.")
 	public void SearchAndLunchIsofbetGames(String GameNames) {
-
-		System.out.println(GameNames);
-
+		Perform.GoToSearchButtonInCasino();
+		String getgameNamefromLuncher = Perform.FindAndLunchGame(GameNames);
+		AssertJUnit.assertEquals(GameNames, getgameNamefromLuncher);
 	}
 
 	/**
