@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<suite name="MainSuite1">
+	<parameter name="browser" value="Chrome"></parameter>
+	<test name="ChromeBrowserTest">
+		<classes>
+			 <class name="SearchIsoftBetCheck.SearchandLunchTest"/>
+      <class name="LoginPageCheck.SecurityTests"/>
+      <class name="LoginPageCheck.UserInterfaceTests"/>
+      <class name="LoginPageCheck.FunctionalityTests"/>
+
+		</classes>
+	</test>
+</suite>  

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<suite name="All suites">
+	<suite-files>
+	<suite-file path = "ChromeBrowser.xml"/>
+	<suite-file path = "FireFoxBrowser.xml"/>
+	<suite-file path = "OperaBrowser.xml"/>
+	</suite-files>
+</suite>  

@@ -74,7 +74,7 @@ public class FunctionalityTests extends ParentTestClass {
 	 */
 	@Test(groups = { "stable",
 			"functionality" }, description = "This test checks the login function with valid username and valid password. It then verifies the valid login response.")
-	public void CheckValidUsernameAndValidPassword() {
+	public void ValidUsernameAndValidPassword() {
 		Perform.ClickLogin(Config.Credentials.Valid.Username, Config.Credentials.Valid.Password);
 		Perform.WaitElementsAfterValidLogin();
 		WebDriver driver = Perform.ReturnActiveDriverInstance();
