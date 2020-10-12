@@ -1,14 +1,14 @@
 package Utils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,54 +23,86 @@ import PageObjects.SessionExpiredWindow;
  * used to perform various tasks
  */
 public class Perform {
-	private static WebDriver driver;
+	private static RemoteWebDriver driver;
 
 	/**
 	 * This method creates an instance of webdriver mentioned in browsername in
 	 * parameters
 	 */
 	public static void InitializeDriver(String browsername) {
-		browsername = browsername != null ? browsername : "Opera";
+		browsername = browsername != null ? browsername : "Chrome";
 		if (browsername.equals("Chrome")) {
+//			try {
+//				System.setProperty("webdriver.chrome.driver",
+//						System.getProperty("user.dir") + "/Drivers/ChromeDriver/chromedriver.exe");
+//				driver = new ChromeDriver();
+//			} catch (org.openqa.selenium.WebDriverException e) {
+//				System.out
+//						.println("The Chrome web browser might not be installed or did not find it. " + e.getMessage());
+//			}
 			try {
-				System.setProperty("webdriver.chrome.driver",
-						System.getProperty("user.dir") + "/Drivers/ChromeDriver/chromedriver.exe");
-				driver = new ChromeDriver();
-			} catch (org.openqa.selenium.WebDriverException e) {
-				System.out
-						.println("The Chrome web browser might not be installed or did not find it. " + e.getMessage());
+				DesiredCapabilities dc = DesiredCapabilities.chrome();
+				URL url = new URL("http://localhost:4444/wd/hub");
+				driver = new RemoteWebDriver(url, dc);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		if (browsername.equals("InternetExplorer")) {
+//			try {
+//				System.setProperty("webdriver.ie.driver",
+//						System.getProperty("user.dir") + "/Drivers/IEDriver/IEDriverServer.exe");
+//				driver = new InternetExplorerDriver();
+//			} catch (org.openqa.selenium.WebDriverException e) {
+//				System.out.println("The InternetExplorer web browser might not be installed or did not find it. "
+//						+ e.getMessage());
+//			}
 			try {
-				System.setProperty("webdriver.ie.driver",
-						System.getProperty("user.dir") + "/Drivers/IEDriver/IEDriverServer.exe");
-				driver = new InternetExplorerDriver();
-			} catch (org.openqa.selenium.WebDriverException e) {
-				System.out.println("The InternetExplorer web browser might not be installed or did not find it. "
-						+ e.getMessage());
+				DesiredCapabilities dc = DesiredCapabilities.internetExplorer();
+				URL url = new URL("http://localhost:4444/wd/hub");
+				driver = new RemoteWebDriver(url, dc);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		if (browsername.equals("FireFox")) {
+//			try {
+//				System.setProperty("webdriver.gecko.driver",
+//						System.getProperty("user.dir") + "/Drivers/FireFoxDriver/geckodriver.exe");
+//				driver = new FirefoxDriver();
+//			} catch (org.openqa.selenium.WebDriverException e) {
+//				System.out.println(
+//						"The FireFox web browser might not be installed or did not find it. " + e.getMessage());
+//			}
 			try {
-				System.setProperty("webdriver.gecko.driver",
-						System.getProperty("user.dir") + "/Drivers/FireFoxDriver/geckodriver.exe");
-				driver = new FirefoxDriver();
-			} catch (org.openqa.selenium.WebDriverException e) {
-				System.out.println(
-						"The FireFox web browser might not be installed or did not find it. " + e.getMessage());
+				DesiredCapabilities dc = DesiredCapabilities.firefox();
+				URL url = new URL("http://localhost:4444/wd/hub");
+				driver = new RemoteWebDriver(url, dc);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		if (browsername.equals("Opera")) {
+//			try {
+//				System.setProperty("webdriver.opera.driver",
+//						System.getProperty("user.dir") + "/Drivers/OperaDriver/operadriver.exe");
+//				OperaDriver browser = new OperaDriver();
+//
+//				driver = browser;
+//			} catch (org.openqa.selenium.WebDriverException e) {
+//				System.out
+//						.println("The Opera web browser might not be installed or did not find it. " + e.getMessage());
+//			}
 			try {
-				System.setProperty("webdriver.opera.driver",
-						System.getProperty("user.dir") + "/Drivers/OperaDriver/operadriver.exe");
-				OperaDriver browser = new OperaDriver();
-
-				driver = browser;
-			} catch (org.openqa.selenium.WebDriverException e) {
-				System.out
-						.println("The Opera web browser might not be installed or did not find it. " + e.getMessage());
+				DesiredCapabilities dc = DesiredCapabilities.opera();
+				URL url = new URL("http://localhost:4444/wd/hub");
+				driver = new RemoteWebDriver(url, dc);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 
