@@ -1,11 +1,15 @@
 package LoginPageCheck;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import PageObjects.ForgotPasswordWindow;
@@ -20,6 +24,28 @@ import Utils.Perform;
  * the beforegroup and aftergroup properties from ParentTestClass
  */
 public class UserInterfaceTests extends ParentTestClass {
+	RemoteWebDriver driver;
+
+	/**
+	 * This method runs shortly before the first test method that belongs to any of
+	 * these groups is invoked. An instance of webdriver mentioned in browsername in
+	 * parameters will get created through this method
+	 */
+	@BeforeClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@Parameters({ "browser" })
+	public void initialize(@Optional String browsername) {
+		driver = Perform.InitializeDriver(browsername);
+	}
+
+	/**
+	 * This method run shortly after the last test method that belongs to any of
+	 * these groups is invoked. It shut down the web driver instance or destroy the
+	 * web driver instance(Close all the windows).
+	 */
+	@AfterClass(groups = { "stable", "functionality", "userinterface", "security" })
+	public void close() {
+		Perform.CloseDriver(driver);
+	}
 
 	/**
 	 * This test checks if various elements in the login window are present once the
@@ -29,8 +55,7 @@ public class UserInterfaceTests extends ParentTestClass {
 			"userinterface" }, description = " This test checks if various elements in the login window are present once the\r\n"
 					+ "window has been loaded. It checks if the elements are displayed or not.")
 	public void CheckLoginPageElements() {
-		Perform.GoToLoginPage();
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.GoToLoginPage(driver);
 		LoginWindow loginPage = new LoginWindow(driver);
 		AssertJUnit.assertEquals("Login Page window is not displayed", true,
 				loginPage.LoginDialogueWindow.isDisplayed());
@@ -62,8 +87,7 @@ public class UserInterfaceTests extends ParentTestClass {
 			"userinterface" }, description = " This test checks if various elements in the SignUp window are present once the\r\n"
 					+ "page has been loaded. It checks if the elements are displayed or not.")
 	public void CheckSignUpElements() {
-		Perform.GoToLoginPage();
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.GoToLoginPage(driver);
 		LoginWindow loginPage = new LoginWindow(driver);
 		SignUpWindow signupPage = new SignUpWindow(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
@@ -100,8 +124,7 @@ public class UserInterfaceTests extends ParentTestClass {
 			"userinterface" }, description = " This test checks if various elements in the forgetPassword window are present once the\r\n"
 					+ "window has been loaded. It checks if the elements are displayed or not.")
 	public void CheckForgotPasswordPageElements() {
-		Perform.GoToLoginPage();
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.GoToLoginPage(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		LoginWindow loginPage = new LoginWindow(driver);
 		loginPage.ForgotPassoword.click();
@@ -136,7 +159,7 @@ public class UserInterfaceTests extends ParentTestClass {
 	@AfterMethod(groups = { "stable", "userinterface" })
 	public void GoBackToLoginPage() {
 
-		Perform.ClickGoBack();
+		Perform.ClickGoBack(driver);
 	}
 
 }

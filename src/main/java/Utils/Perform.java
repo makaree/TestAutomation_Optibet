@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,13 +22,14 @@ import PageObjects.SessionExpiredWindow;
  * used to perform various tasks
  */
 public class Perform {
-	private static RemoteWebDriver driver;
+	// private static RemoteWebDriver driver;
 
 	/**
 	 * This method creates an instance of webdriver mentioned in browsername in
 	 * parameters
 	 */
-	public static void InitializeDriver(String browsername) {
+	public static RemoteWebDriver InitializeDriver(String browsername) {
+		RemoteWebDriver driver = null;
 		browsername = browsername != null ? browsername : "Chrome";
 		if (browsername.equals("Chrome")) {
 //			try {
@@ -97,7 +97,7 @@ public class Perform {
 //						.println("The Opera web browser might not be installed or did not find it. " + e.getMessage());
 //			}
 			try {
-				DesiredCapabilities dc = DesiredCapabilities.opera();
+				DesiredCapabilities dc = DesiredCapabilities.operaBlink();
 				URL url = new URL("http://localhost:4444/wd/hub");
 				driver = new RemoteWebDriver(url, dc);
 			} catch (MalformedURLException e) {
@@ -111,12 +111,13 @@ public class Perform {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"topBar\"]/div[1]/div[2]/button[1]")));
+		return driver;
 	}
 
 	/**
 	 * This method opens the url that is mentioned in the parameter of the method
 	 */
-	public static void OpenUrl(String Url) {
+	public static void OpenUrl(RemoteWebDriver driver, String Url) {
 		driver.get(Url);
 		driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 	}
@@ -125,7 +126,7 @@ public class Perform {
 	 * This method opens the url with IsoftBet category in the query and returns all
 	 * the games names present in this category
 	 */
-	public static String[] FindGameNamesInIsofbetCategory() {
+	public static String[] FindGameNamesInIsofbetCategory(RemoteWebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		String scriptsection = "return document.querySelectorAll('#app > div.container___hBWrc-scss.oblt > main > div:nth-child(2) > div.page-content___3oo_o-scss.page-content_wide___1wN6X-scss.container___2stOa-scss > div')[0].";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -149,7 +150,7 @@ public class Perform {
 	/**
 	 * This method navigates to search button in Casino
 	 */
-	public static void GoToSearchButtonInCasino() {
+	public static void GoToSearchButtonInCasino(RemoteWebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		CasinoPage casinoPage = new CasinoPage(driver);
 		MainPage mainPage = new MainPage(driver);
@@ -167,7 +168,7 @@ public class Perform {
 	 * This method finds the game passed in method to search button in Casino Page,
 	 * lunches it and return the title of lunched game
 	 */
-	public static String FindAndLunchGame(String gameName) {
+	public static String FindAndLunchGame(RemoteWebDriver driver, String gameName) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		CasinoPage casinoPage = new CasinoPage(driver);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -222,7 +223,7 @@ public class Perform {
 	/**
 	 * This method clicks the <<Go Back button in the browser
 	 */
-	public static void BackButtonAfterLogin() {
+	public static void BackButtonAfterLogin(RemoteWebDriver driver) {
 		driver.navigate().back();
 		LoginPageResponse loginPageResponse = new LoginPageResponse(driver);
 		try {
@@ -244,8 +245,8 @@ public class Perform {
 	 * dialogue window in the username and password field and clicks the login
 	 * button.
 	 */
-	public static void ClickLogin(String username, String password) {
-		GoToLoginPage();
+	public static void ClickLogin(RemoteWebDriver driver, String username, String password) {
+		GoToLoginPage(driver);
 		LoginWindow loginPage = new LoginWindow(driver);
 		loginPage.UserName.clear();
 		loginPage.UserName.sendKeys(username);
@@ -258,7 +259,7 @@ public class Perform {
 	 * This method waits until all the elements are loaded into the login window
 	 * loads this window
 	 */
-	public static void GoToLoginPage() {
+	public static void GoToLoginPage(RemoteWebDriver driver) {
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"topBar\"]/div[1]/div[2]")));
@@ -282,7 +283,7 @@ public class Perform {
 	 * This method waits until all the elements are loaded into the webdriver after
 	 * valid credentials
 	 */
-	public static void WaitElementsAfterValidLogin() {
+	public static void WaitElementsAfterValidLogin(RemoteWebDriver driver) {
 		LoginPageResponse loginPageResponse = new LoginPageResponse(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		try {
@@ -302,18 +303,10 @@ public class Perform {
 	}
 
 	/**
-	 * This method returns the current instance of the webdriver that is currently
-	 * executed in the browser
-	 */
-	public static WebDriver ReturnActiveDriverInstance() {
-		return driver;
-	}
-
-	/**
 	 * This method reads the text value in Login Dialogue Window from username field
 	 * and returns the text that is present in this element in the form of string
 	 */
-	public static String ReadLoginResponseMessageUsernameField() {
+	public static String ReadLoginResponseMessageUsernameField(RemoteWebDriver driver) {
 		LoginWindow loginPage = new LoginWindow(driver);
 		return loginPage.UserNameFieldError.getText();
 	}
@@ -322,7 +315,7 @@ public class Perform {
 	 * This method reads the text value in Login Dialogue Window from password field
 	 * and returns the text that is present in this element in the form of string
 	 */
-	public static String ReadLoginResponseMessagePasswordField() {
+	public static String ReadLoginResponseMessagePasswordField(RemoteWebDriver driver) {
 		LoginWindow loginPage = new LoginWindow(driver);
 		return loginPage.PassWordFieldError.getText();
 	}
@@ -332,7 +325,7 @@ public class Perform {
 	 * field which is then converted into hexvalue and returns the hexvalue is form
 	 * of string
 	 */
-	public static String ReadLoginResponseMessageColorUsernameField() {
+	public static String ReadLoginResponseMessageColorUsernameField(RemoteWebDriver driver) {
 		LoginWindow loginPage = new LoginWindow(driver);
 		String color = loginPage.UserNameFieldError.getCssValue("color");
 		String color_hex[];
@@ -354,7 +347,7 @@ public class Perform {
 	 * field which is then converted into hexvalue and returns the hexvalue is form
 	 * of string
 	 */
-	public static String ReadLoginResponseMessageColorPasswordField() {
+	public static String ReadLoginResponseMessageColorPasswordField(RemoteWebDriver driver) {
 		LoginWindow loginPage = new LoginWindow(driver);
 		String color = loginPage.PassWordFieldError.getCssValue("color");
 		String color_hex[];
@@ -383,7 +376,7 @@ public class Perform {
 	 * This method returns the current url that is running in the web browser in the
 	 * form of string
 	 */
-	public static String ReturnCurrentUrl() {
+	public static String ReturnCurrentUrl(RemoteWebDriver driver) {
 		return driver.getCurrentUrl();
 	}
 
@@ -391,7 +384,7 @@ public class Perform {
 	 * This method checks if there are any alert in the web browser and returns it
 	 * in the form of boolean value
 	 */
-	public static boolean isAlertPresent() {
+	public static boolean isAlertPresent(RemoteWebDriver driver) {
 		boolean foundAlert = false;
 		WebDriverWait wait = new WebDriverWait(driver, 0 /* timeout in seconds */);
 		try {
@@ -406,7 +399,7 @@ public class Perform {
 	/**
 	 * This method navigates to main page if it is in any other pages/window.
 	 */
-	public static void ClickGoBack() {
+	public static void ClickGoBack(RemoteWebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		LoginWindow loginPage = new LoginWindow(driver);
 		try {
@@ -443,7 +436,7 @@ public class Perform {
 	 * This method shut down the web driver instance or destroy the web driver
 	 * instance(Close all the windows).
 	 */
-	public static void CloseDriver() {
+	public static void CloseDriver(RemoteWebDriver driver) {
 		driver.quit();
 	}
 }

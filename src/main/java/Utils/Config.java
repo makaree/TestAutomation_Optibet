@@ -17,7 +17,7 @@ public class Config {
 		 */
 		public static class Valid {
 			public static String Username = "manz.karki@gmail.com";
-			public static String Password = "Manish12345";
+			public static String Password = "Manish123456";
 		}
 
 		/**

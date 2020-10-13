@@ -2,15 +2,18 @@ package LoginPageCheck;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import PageObjects.LoginPageResponse;
 import PageObjects.LoginWindow;
 import PageObjects.MainPage;
 import Utils.Config;
@@ -23,6 +26,28 @@ import Utils.Perform;
  * aftergroup properties from ParentTestClass
  */
 public class FunctionalityTests extends ParentTestClass {
+	RemoteWebDriver driver;
+
+	/**
+	 * This method runs shortly before the first test method that belongs to any of
+	 * these groups is invoked. An instance of webdriver mentioned in browsername in
+	 * parameters will get created through this method
+	 */
+	@BeforeClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@Parameters({ "browser" })
+	public void initialize(@Optional String browsername) {
+		driver = Perform.InitializeDriver(browsername);
+	}
+
+	/**
+	 * This method run shortly after the last test method that belongs to any of
+	 * these groups is invoked. It shut down the web driver instance or destroy the
+	 * web driver instance(Close all the windows).
+	 */
+	@AfterClass(groups = { "stable", "functionality", "userinterface", "security" })
+	public void close() {
+		Perform.CloseDriver(driver);
+	}
 
 	/**
 	 * This test checks the tab and enter keys functionality in the login page. The
@@ -35,7 +60,6 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "Step 2: Send TAB keys when in the password field. After tab keys are sent it sould select LoginButton"
 					+ "Step 3: Send Enter keys when Login Button is selected. After enter keys are sent it should click LoginButton"))
 	public void CheckTabAndEntrInLoginPage() {
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
 				"#topBar > div.page-content___3oo_o-scss.topBarContent___3cr_D-scss > div.main___ejdhD-scss > button.button-base___Zmw1k-scss.button___25A2P-scss.button_size-default___2lYeH-scss.button_intent-default___2Ljl_-scss.login___Ltkvq-scss.optionsButton")));
@@ -63,27 +87,10 @@ public class FunctionalityTests extends ParentTestClass {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
 		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
-				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField());
+				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
 		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorPasswordField());
+				Perform.ReadLoginResponseMessageColorPasswordField(driver));
 
-	}
-
-	/**
-	 * This test checks the login function with valid username and valid password.
-	 */
-	@Test(groups = { "stable",
-			"functionality" }, description = "This test checks the login function with valid username and valid password. It then verifies the valid login response.")
-	public void ValidUsernameAndValidPassword() {
-		Perform.ClickLogin(Config.Credentials.Valid.Username, Config.Credentials.Valid.Password);
-		Perform.WaitElementsAfterValidLogin();
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
-		LoginPageResponse loginPageResponse = new LoginPageResponse(driver);
-		AssertJUnit.assertEquals("The Account profile link section is not present",
-				loginPageResponse.AccountProfileLink.isDisplayed(), true);
-		AssertJUnit.assertEquals("The Balance Amount section is not present",
-				loginPageResponse.DepositNow.isDisplayed(), true);
-		AssertJUnit.assertEquals("The Logout option not present", loginPageResponse.LogOut.getText(), "Logout");
 	}
 
 	/**
@@ -97,21 +104,20 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  dataprovider.")
 	public void UsernameLessThanSixChar(String usernamevlue, String passwordvalue) {
 
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions
 				.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[1]/div")));
 		AssertJUnit.assertEquals("Username can not be less than 6 characters is not present in response message",
-				Config.TestMessages.LessThanSixChar, Perform.ReadLoginResponseMessageUsernameField());
+				Config.TestMessages.LessThanSixChar, Perform.ReadLoginResponseMessageUsernameField(driver));
 		if (passwordvalue == "") {
 			AssertJUnit.assertEquals("Username can not be less than 6 characters is not present in response message",
-					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField());
+					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField(driver));
 			AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-					Perform.ReadLoginResponseMessageColorPasswordField());
+					Perform.ReadLoginResponseMessageColorPasswordField(driver));
 		}
 		AssertJUnit.assertEquals("The Username response message field is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorUsernameField());
+				Perform.ReadLoginResponseMessageColorUsernameField(driver));
 	}
 
 	/**
@@ -125,21 +131,20 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  dataprovider.")
 	public void UsernameMoreThanThirtytwoChar(String usernamevlue, String passwordvalue) {
 
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions
 				.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[1]/div")));
 		AssertJUnit.assertEquals("Username can not be more than 32 characters is not present in response message",
-				Config.TestMessages.MoreThanThirtytwoChar, Perform.ReadLoginResponseMessageUsernameField());
+				Config.TestMessages.MoreThanThirtytwoChar, Perform.ReadLoginResponseMessageUsernameField(driver));
 		if (passwordvalue == "") {
 			AssertJUnit.assertEquals("Username can not be less than 6 characters is not present in response message",
-					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField());
+					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField(driver));
 			AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-					Perform.ReadLoginResponseMessageColorPasswordField());
+					Perform.ReadLoginResponseMessageColorPasswordField(driver));
 		}
 		AssertJUnit.assertEquals("The Username response message field is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorUsernameField());
+				Perform.ReadLoginResponseMessageColorUsernameField(driver));
 	}
 
 	/**
@@ -153,21 +158,20 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  dataprovider.")
 	public void UsernameWithInvalidChar(String usernamevlue, String passwordvalue) {
 
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions
 				.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[1]/div")));
 		AssertJUnit.assertEquals("Use Latin letters, numbers, and underscores only, with no spaces. is not present",
-				Config.TestMessages.InvalidCharacter, Perform.ReadLoginResponseMessageUsernameField());
+				Config.TestMessages.InvalidCharacter, Perform.ReadLoginResponseMessageUsernameField(driver));
 		if (passwordvalue == "") {
 			AssertJUnit.assertEquals("Username can not be less than 6 characters is not present in response message",
-					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField());
+					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField(driver));
 			AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-					Perform.ReadLoginResponseMessageColorPasswordField());
+					Perform.ReadLoginResponseMessageColorPasswordField(driver));
 		}
 		AssertJUnit.assertEquals("The Username response message field is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorUsernameField());
+				Perform.ReadLoginResponseMessageColorUsernameField(driver));
 	}
 
 	/**
@@ -181,44 +185,44 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  dataprovider.")
 	public void UsernameWithInvalidEmail(String usernamevlue, String passwordvalue) {
 
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions
 				.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[1]/div")));
 		AssertJUnit.assertEquals("Please enter a valid email is not present in response",
-				Config.TestMessages.InvalidEmail, Perform.ReadLoginResponseMessageUsernameField());
+				Config.TestMessages.InvalidEmail, Perform.ReadLoginResponseMessageUsernameField(driver));
 		if (passwordvalue == "") {
 			AssertJUnit.assertEquals("Username can not be less than 6 characters is not present in response message",
-					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField());
+					Config.TestMessages.PasswordEmpty, Perform.ReadLoginResponseMessagePasswordField(driver));
 			AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-					Perform.ReadLoginResponseMessageColorPasswordField());
+					Perform.ReadLoginResponseMessageColorPasswordField(driver));
 		}
 		AssertJUnit.assertEquals("The Username response message field is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorUsernameField());
+				Perform.ReadLoginResponseMessageColorUsernameField(driver));
 	}
 
-	/**
-	 * This test checks the login function with valid username and invalid password.
-	 * This test is data driven, it checks the login with multiple data through
-	 * dataprovider.
-	 */
-	@Test(dataProvider = "ValidUsernameInvalidPassword", groups = { "stable",
-			"functionality" }, description = "This test checks the login function with valid username and valid, invalid password. It then verifies the invalid login response message\r\n"
-					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
-					+ "	  dataprovider.")
-	public void ValidUsernameAndInvalidPassword(String usernamevlue, String passwordvalue) {
-
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
-		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
-				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField());
-		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorPasswordField());
-	}
+	/// This test is commented because it blocks the account after ruuning several
+	/// times
+//	/**
+//	 * This test checks the login function with valid username and invalid password.
+//	 * This test is data driven, it checks the login with multiple data through
+//	 * dataprovider.
+//	 */
+//	@Test(dataProvider = "ValidUsernameInvalidPassword", groups = { "stable",
+//			"functionality" }, description = "This test checks the login function with valid username and valid, invalid password. It then verifies the invalid login response message\r\n"
+//					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
+//					+ "	  dataprovider.")
+//	public void ValidUsernameAndInvalidPassword(String usernamevlue, String passwordvalue) {
+//
+//		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
+//		WebDriverWait wait = new WebDriverWait(driver, 30);
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(
+//				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
+//		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
+//				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
+//		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
+//				Perform.ReadLoginResponseMessageColorPasswordField(driver));
+//	}
 
 	/**
 	 * This test checks the login function with Invalid username and valid password.
@@ -230,15 +234,14 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
 					+ "	  dataprovider.")
 	public void InvalidUsernameAndValidPassword(String usernamevlue, String passwordvalue) {
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
 		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
-				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField());
+				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
 		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorPasswordField());
+				Perform.ReadLoginResponseMessageColorPasswordField(driver));
 
 	}
 
@@ -252,15 +255,14 @@ public class FunctionalityTests extends ParentTestClass {
 					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
 					+ "	  dataprovider.")
 	public void InvalidUsernameAndInvalidPassword(String usernamevlue, String passwordvalue) {
-		Perform.ClickLogin(usernamevlue, passwordvalue);
-		WebDriver driver = Perform.ReturnActiveDriverInstance();
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
 		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
-				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField());
+				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
 		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-				Perform.ReadLoginResponseMessageColorPasswordField());
+				Perform.ReadLoginResponseMessageColorPasswordField(driver));
 	}
 
 	/**
@@ -352,7 +354,7 @@ public class FunctionalityTests extends ParentTestClass {
 	 */
 	@AfterMethod(groups = { "stable", "functionality" })
 	public void GoBackToLoginPage() {
-		Perform.ClickGoBack();
+		Perform.ClickGoBack(driver);
 	}
 
 }
