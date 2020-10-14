@@ -36,12 +36,11 @@ command to make sure docker is installed.
 command to make sure maven is installed.
 
 2. Download the repository from the GIT.
-***(Run command in command prompt or terminal
-docker-compose up 
+(Run command in command prompt or terminal
+***docker-compose up***
 in the beginning in the first run so that all necessary packages are installed and the test would run faster later. After successful completion load
-docker-compose down
-to stop it.
-)***
+***docker-compose down***
+to stop it.)
 
 3. Inside the downloaded folder TestAutomation_Optibet, open command prompt in this location  and run command in command prompt/bash
 ***mvn clean test*** 
@@ -51,12 +50,11 @@ It might take some time few minutes to install all the jar file and dependencies
 
 **Method 2 with Eclipse:**
 1. Download the repository from the GIT.
-***(Run command in command prompt or terminal
-docker-compose up 
+(Run command in command prompt or terminal
+***docker-compose up***
 in the beginning in the first run so that all necessary packages are installed and the test would run faster later. After successful completion load
-docker-compose down
-to stop it.
-)***
+***docker-compose down***
+to stop it.)
 
 2. Open the folder TestAutomation_Optibet in Eclipse. Build the project. It might take some time few minutes to install all the jar file and dependencies when this project is being build.
 
@@ -77,3 +75,8 @@ Some of the features that are included in the testing framework are as follows:
 
 ## Contact
 If you got any questions feel free to contact me: manz.karki@gmail.com
+
+##Future Works
+***DockerFile Option is present to run the test directly and easily in two steps using commands 
+1."docker build -t test ." and 
+2."docker run --rm -it test:latest" but volume-mounting option to copy results from output is not present currently. Also timeout might happen when docker-compose is to be run.

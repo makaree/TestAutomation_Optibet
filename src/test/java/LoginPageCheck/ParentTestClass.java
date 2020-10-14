@@ -31,7 +31,7 @@ public class ParentTestClass {
 			Runtime.getRuntime().exec(commandstart);
 			Thread.sleep(60000);
 			if (checkconnection() == false) {
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 20; i++) {
 					System.out.println("waiting for software to load is for" + i + "min");
 					Thread.sleep(60000);
 					if (checkconnection() == true) {
