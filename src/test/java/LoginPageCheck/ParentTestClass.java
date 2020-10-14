@@ -13,10 +13,10 @@ import org.testng.annotations.BeforeSuite;
 public class ParentTestClass {
 	String commandstart = System.getProperty("os.name").contains("Windows")
 			? "cmd.exe /c start " + System.getProperty("user.dir") + "\\dockerStart.bat"
-			: "/bin/bash -c " + System.getProperty("user.dir") + "\\dockerStart.sh";
+			: "bash -c " + System.getProperty("user.dir") + "/dockerStart.sh";
 	String commandstop = System.getProperty("os.name").contains("Windows")
 			? "cmd.exe /c start " + System.getProperty("user.dir") + "\\dockerStop.bat"
-			: "/bin/bash -c " + System.getProperty("user.dir") + "\\dockerStop.sh";
+			: "bash -c " + System.getProperty("user.dir") + "/dockerStop.sh";
 	String killtask = System.getProperty("os.name").contains("Windows") ? "taskkill /f /im cmd.exe" : "killall bash";
 
 	/**

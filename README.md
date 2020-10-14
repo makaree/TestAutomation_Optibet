@@ -36,6 +36,12 @@ command to make sure docker is installed.
 command to make sure maven is installed.
 
 2. Download the repository from the GIT.
+***(Run command in command prompt or terminal
+docker-compose up 
+in the beginning in the first run so that all necessary packages are installed and the test would run faster later. After successful completion load
+docker-compose down
+to stop it.
+)***
 
 3. Inside the downloaded folder TestAutomation_Optibet, open command prompt in this location  and run command in command prompt/bash
 ***mvn clean test*** 
@@ -45,6 +51,12 @@ It might take some time few minutes to install all the jar file and dependencies
 
 **Method 2 with Eclipse:**
 1. Download the repository from the GIT.
+***(Run command in command prompt or terminal
+docker-compose up 
+in the beginning in the first run so that all necessary packages are installed and the test would run faster later. After successful completion load
+docker-compose down
+to stop it.
+)***
 
 2. Open the folder TestAutomation_Optibet in Eclipse. Build the project. It might take some time few minutes to install all the jar file and dependencies when this project is being build.
 
@@ -57,10 +69,11 @@ It might take some time few minutes to install all the jar file and dependencies
 
 ## Features
 Some of the features that are included in the testing framework are as follows:
-1. Docker-compose file automatically configures the browsers firefox, opera and chrome and runs the test there.
-2. Tests run in parallel (where user does not needs to be logged-in) and in series (where user needs to be logged-in)
-3. Some of the tests are data driven meaning it runs the same test with multiple data through dataprovider.
-4. Maven plugins scripts are written inside Project which could build, run the test cases and generate an HTML report file after running the test cases.
+1. Works with both windows and linux based systems.
+2. Docker-compose file automatically configures the browsers firefox, opera and chrome and runs the test there.
+3. Tests run in parallel (where user does not needs to be logged-in) and in series (where user needs to be logged-in)
+4. Some of the tests are data driven meaning it runs the same test with multiple data through dataprovider.
+5. Maven plugins scripts are written inside Project which could build, run the test cases and generate an HTML report file after running the test cases.
 
 ## Contact
 If you got any questions feel free to contact me: manz.karki@gmail.com
