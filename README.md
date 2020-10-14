@@ -26,7 +26,7 @@ Here are the list of steps required for the test execution. Below are the pre-re
 command to make sure java is installed.
 
 - In case docker is not installed, Install Docker (https://www.docker.com/products/docker-desktop) if not installed. Then in command prompt run 
-***docker -version*** 
+***docker -v*** 
 command to make sure docker is installed.
 
 
@@ -52,7 +52,7 @@ It might take some time few minutes to install all the jar file and dependencies
 
 ***Since there are huge number of tests to execute in multiple browsers so it take almost half and hour or more to execute.***
 
-***ValidUsernameAndInvalidPassword test case is disabled and it will be skiped as it blocks the account after multiple runs.***
+***ValidUsernameAndInvalidPassword test case is disabled to run because it blocks the account after multiple runs.***
 
 
 ## Features

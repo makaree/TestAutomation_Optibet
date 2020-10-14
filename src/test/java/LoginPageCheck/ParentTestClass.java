@@ -11,7 +11,13 @@ import org.testng.annotations.BeforeSuite;
  * This test class contains methods that runs before and after test suite
  */
 public class ParentTestClass {
-	String command = System.getProperty("os.name").contains("Windows") ? "cmd.exe /c " : "/bin/bash ";
+	String commandstart = System.getProperty("os.name").contains("Windows")
+			? "cmd.exe /c start " + System.getProperty("user.dir") + "\\dockerStart.bat"
+			: "/bin/bash -c " + System.getProperty("user.dir") + "\\dockerStart.sh";
+	String commandstop = System.getProperty("os.name").contains("Windows")
+			? "cmd.exe /c start " + System.getProperty("user.dir") + "\\dockerStop.bat"
+			: "/bin/bash -c " + System.getProperty("user.dir") + "\\dockerStop.sh";
+	String killtask = System.getProperty("os.name").contains("Windows") ? "taskkill /f /im cmd.exe" : "killall bash";
 
 	/**
 	 * This method runs shortly before the first test method
@@ -22,7 +28,7 @@ public class ParentTestClass {
 		try {
 			// start the docker grid
 			System.out.println("start the docker grid");
-			Runtime.getRuntime().exec(command + "start " + System.getProperty("user.dir") + "\\dockerStart.bat");
+			Runtime.getRuntime().exec(commandstart);
 			Thread.sleep(60000);
 			if (checkconnection() == false) {
 				for (int i = 0; i < 10; i++) {
@@ -47,9 +53,9 @@ public class ParentTestClass {
 	public void close() {
 		try {
 			// start the docker grid
-			Runtime.getRuntime().exec(command + "start " + System.getProperty("user.dir") + "\\dockerStop.bat");
+			Runtime.getRuntime().exec(commandstop);
 			Thread.sleep(20000);
-			Runtime.getRuntime().exec("taskkill /f /im cmd.exe"); // closes command prompt
+			Runtime.getRuntime().exec(killtask); // closes command prompt
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
