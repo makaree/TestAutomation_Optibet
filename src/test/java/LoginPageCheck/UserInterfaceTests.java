@@ -31,7 +31,7 @@ public class UserInterfaceTests extends ParentTestClass {
 	 * these groups is invoked. An instance of webdriver mentioned in browsername in
 	 * parameters will get created through this method
 	 */
-	@BeforeClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@BeforeClass(groups = { "stable", "userinterface" })
 	@Parameters({ "browser" })
 	public void initialize(@Optional String browsername) {
 		driver = Perform.InitializeDriver(browsername);
@@ -42,7 +42,7 @@ public class UserInterfaceTests extends ParentTestClass {
 	 * these groups is invoked. It shut down the web driver instance or destroy the
 	 * web driver instance(Close all the windows).
 	 */
-	@AfterClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@AfterClass(groups = { "stable", "userinterface" })
 	public void close() {
 		Perform.CloseDriver(driver);
 	}

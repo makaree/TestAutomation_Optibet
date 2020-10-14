@@ -17,6 +17,10 @@ import PageObjects.MainPage;
 import Utils.Config;
 import Utils.Perform;
 
+/**
+ * This test class contains one functionality test and three security tests
+ * because they require login and cannot be performed in parallel
+ */
 public class TestsRequiringValidLogin {
 
 	RemoteWebDriver driver;
@@ -26,7 +30,7 @@ public class TestsRequiringValidLogin {
 	 * these groups is invoked. An instance of webdriver mentioned in browsername in
 	 * parameters will get created through this method
 	 */
-	@BeforeClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@BeforeClass(groups = { "stable" })
 	@Parameters({ "browser" })
 	public void initialize(@Optional String browsername) {
 		driver = Perform.InitializeDriver(browsername);
@@ -37,7 +41,7 @@ public class TestsRequiringValidLogin {
 	 * these groups is invoked. It shut down the web driver instance or destroy the
 	 * web driver instance(Close all the windows).
 	 */
-	@AfterClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@AfterClass(groups = { "stable" })
 	public void close() {
 		Perform.CloseDriver(driver);
 	}
@@ -190,7 +194,7 @@ public class TestsRequiringValidLogin {
 	 * This method is executed at the end of every test case which navigates to
 	 * login page if it is in other page
 	 */
-	@AfterMethod(groups = { "stable", "security" })
+	@AfterMethod(groups = { "stable" })
 	public void GoBackToLoginPage() {
 
 		Perform.ClickGoBack(driver);

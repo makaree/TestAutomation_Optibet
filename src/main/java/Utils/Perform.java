@@ -232,7 +232,8 @@ public class Perform {
 
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for checking WelcomeDialogueClose");
 		}
 	}
 
@@ -267,7 +268,8 @@ public class Perform {
 				sessionExpired.SessionExpiredWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for checking SessionExpiredWindow");
 		}
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
@@ -291,7 +293,8 @@ public class Perform {
 
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for checking WelcomeDialogueClose");
 		}
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
 				"#topBar > div.page-content___3oo_o-scss.topBarContent___3cr_D-scss > div.main___2Aq79-scss > div > span.container___1dsKe-scss.undefined > a")));
@@ -402,7 +405,8 @@ public class Perform {
 				loginPage.LoginWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for checking login dialogue");
 		}
 		LoginPageResponse loginPageResponse = new LoginPageResponse(driver);
 		try {
@@ -410,7 +414,9 @@ public class Perform {
 				loginPageResponse.LogOut.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for logout");
+
 		}
 		SessionExpiredWindow sessionExpired = new SessionExpiredWindow(driver);
 		try {
@@ -418,7 +424,8 @@ public class Perform {
 				sessionExpired.SessionExpiredWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("This catch is optional for checking SessionExpiredWindow");
 		}
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"topBar\"]/div[1]/div[2]")));

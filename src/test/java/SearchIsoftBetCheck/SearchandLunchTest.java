@@ -13,6 +13,9 @@ import LoginPageCheck.ParentTestClass;
 import Utils.Config;
 import Utils.Perform;
 
+/***
+ * This test class lunches all the games present in Isoftbetcategory one by one.
+ */
 public class SearchandLunchTest extends ParentTestClass {
 	RemoteWebDriver driver;
 
@@ -20,7 +23,7 @@ public class SearchandLunchTest extends ParentTestClass {
 	 * This method is executed at the beginning of every test case which makes
 	 * authentication to the login page with valid credentials
 	 */
-	@BeforeClass(groups = { "stable" })
+	@BeforeClass(groups = { "stable", "searchandlunch" })
 	@Parameters({ "browser" })
 	public void SelectisoftBetCategory(@Optional String browsername) {
 		driver = Perform.InitializeDriver(browsername);
@@ -28,8 +31,14 @@ public class SearchandLunchTest extends ParentTestClass {
 		Perform.WaitElementsAfterValidLogin(driver);
 	}
 
-	@Test(dataProvider = "IsoftGameNames", groups = {
-			"stable" }, description = "This test checks the login function with valid username and valid password. It then verifies the valid login response.")
+	/***
+	 * This test lunches all the games present in Isoftbetcategory one by one and
+	 * checks the title of the game once it is lunched and verifies that the right
+	 * game is executed. It only runs the game from Isoftbet category
+	 */
+	@Test(dataProvider = "IsoftGameNames", groups = { "stable",
+			"searchandlunch" }, description = "This test lunches all the games present in Isoftbetcategory one"
+					+ "by one and checks the title of the game once it is lunched and verifies that the right game is executed.")
 	public void SearchAndLunchIsofbetGames(String GameNames) {
 		Perform.GoToSearchButtonInCasino(driver);
 		String getgameNamefromLuncher = Perform.FindAndLunchGame(driver, GameNames);
@@ -37,7 +46,9 @@ public class SearchandLunchTest extends ParentTestClass {
 	}
 
 	/**
-	 * This method provides data for SearchAndLunchIsofbetGames test
+	 * This method provides data for SearchAndLunchIsofbetGames test. It executes
+	 * JavaScript codes to find all the games present in Isoft category and returns
+	 * the name as dataprovider here.
 	 */
 	@DataProvider(name = "IsoftGameNames")
 	public Object[] getIsoftGameNames() {
@@ -49,7 +60,7 @@ public class SearchandLunchTest extends ParentTestClass {
 	 * This method is executed at the end of every test case which navigates to
 	 * login page if it is in other page
 	 */
-	@AfterClass(groups = { "stable" })
+	@AfterClass(groups = { "stable", "searchandlunch" })
 	public void GoBackToLoginPage() {
 		Perform.ClickGoBack(driver);
 		Perform.CloseDriver(driver);

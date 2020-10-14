@@ -33,7 +33,7 @@ public class FunctionalityTests extends ParentTestClass {
 	 * these groups is invoked. An instance of webdriver mentioned in browsername in
 	 * parameters will get created through this method
 	 */
-	@BeforeClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@BeforeClass(groups = { "stable", "functionality" })
 	@Parameters({ "browser" })
 	public void initialize(@Optional String browsername) {
 		driver = Perform.InitializeDriver(browsername);
@@ -44,7 +44,7 @@ public class FunctionalityTests extends ParentTestClass {
 	 * these groups is invoked. It shut down the web driver instance or destroy the
 	 * web driver instance(Close all the windows).
 	 */
-	@AfterClass(groups = { "stable", "functionality", "userinterface", "security" })
+	@AfterClass(groups = { "stable", "functionality" })
 	public void close() {
 		Perform.CloseDriver(driver);
 	}
@@ -241,26 +241,26 @@ public class FunctionalityTests extends ParentTestClass {
 
 	/// This test is commented because it blocks the account after ruuning several
 	/// times
-//	/**
-//	 * This test checks the login function with valid username and invalid password.
-//	 * This test is data driven, it checks the login with multiple data through
-//	 * dataprovider.
-//	 */
-//	@Test(dataProvider = "ValidUsernameInvalidPassword", groups = { "stable",
-//			"functionality" }, description = "This test checks the login function with valid username and valid, invalid password. It then verifies the invalid login response message\r\n"
-//					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
-//					+ "	  dataprovider.")
-//	public void ValidUsernameAndInvalidPassword(String usernamevlue, String passwordvalue) {
-//
-//		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
-//		WebDriverWait wait = new WebDriverWait(driver, 30);
-//		wait.until(ExpectedConditions.visibilityOfElementLocated(
-//				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
-//		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
-//				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
-//		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
-//				Perform.ReadLoginResponseMessageColorPasswordField(driver));
-//	}
+	/**
+	 * This test checks the login function with valid username and invalid password.
+	 * This test is data driven, it checks the login with multiple data through
+	 * dataprovider.
+	 */
+	@Test(enabled = false, dataProvider = "ValidUsernameInvalidPassword", groups = { "stable",
+			"functionality" }, description = "This test checks the login function with valid username and valid, invalid password. It then verifies the invalid login response message\r\n"
+					+ "	  This test is data driven, it checks the login with multiple data through\r\n"
+					+ "	  dataprovider.")
+	public void ValidUsernameAndInvalidPassword(String usernamevlue, String passwordvalue) {
+
+		Perform.ClickLogin(driver, usernamevlue, passwordvalue);
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[1]/div")));
+		AssertJUnit.assertEquals("Username or password is incorrect is not present in response message",
+				Config.TestMessages.InvalidCredentials, Perform.ReadLoginResponseMessagePasswordField(driver));
+		AssertJUnit.assertEquals("The Password response message is not red in color", Config.TextColor.redcolor,
+				Perform.ReadLoginResponseMessageColorPasswordField(driver));
+	}
 
 	/**
 	 * This test checks the login function with Invalid username and valid password.
