@@ -1,3 +1,4 @@
+
 ## Introduction
 This test project contains testing framework to optibet.lv/en login page and running the test cases from IsoftBet Category. The Test URL is https://www.optibet.lv/en.
 
@@ -76,7 +77,7 @@ Some of the features that are included in the testing framework are as follows:
 ## Contact
 If you got any questions feel free to contact me: manz.karki@gmail.com
 
-##Future Works
-***DockerFile Option is present to run the test directly and easily in two steps using commands 
-1."docker build -t test ." and 
-2."docker run --rm -it test:latest" but volume-mounting option to copy results from output is not present currently. Also timeout might happen when docker-compose is to be run.
+## Future Works
+DockerFile Option is present to run the test directly and easily in two steps using commands 
+1.***docker build -t test .*** and 
+2.***docker run --rm -it test:latest*** but volume-mounting option to copy results from output is not present currently. Also timeout might happen when docker-compose is to be run.
