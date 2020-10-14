@@ -94,6 +94,44 @@ public class FunctionalityTests extends ParentTestClass {
 	}
 
 	/**
+	 * This test checks the show password/ visiblity functionality in the login page
+	 * in the password field.
+	 */
+	@Test(groups = { "stable",
+			"functionality" }, description = ("This test checks the show password/ visiblity functionality in the login page The\r\n"
+					+ "	 in the password field. The list of steps are"
+					+ "Step 1: Click in username field and Send TAB keys in Username field. After tab key are sent it should select password field"
+					+ "Step 2: Send TAB keys when in the password field. After tab keys are sent it sould select LoginButton"
+					+ "Step 3: Send Enter keys when Login Button is selected. After enter keys are sent it should click LoginButton"))
+	public void CheckShowPasswordVisiblityButton() {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
+				"#topBar > div.page-content___3oo_o-scss.topBarContent___3cr_D-scss > div.main___ejdhD-scss > button.button-base___Zmw1k-scss.button___25A2P-scss.button_size-default___2lYeH-scss.button_intent-default___2Ljl_-scss.login___Ltkvq-scss.optionsButton")));
+		MainPage mainPage = new MainPage(driver);
+		mainPage.LoginButton.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
+		LoginWindow loginPage = new LoginWindow(driver);
+		// Step 1: Pass a random value in Password field and check if it is masked (text
+		// type is password or not)
+		loginPage.UserName.click();
+		loginPage.UserName.sendKeys("apple@123.gmail.com");
+		loginPage.PassWord.click();
+		loginPage.PassWord.sendKeys("SecretPassword");
+		System.out.println(loginPage.PassWord.getAttribute("type"));
+		AssertJUnit.assertEquals("The password is not masked",
+				loginPage.PassWord.getAttribute("type").equals("password"), true);
+		// Step 2: Click show password button and check is the password field is visible
+		// now (text type is text or not)
+		loginPage.ShowPassword.click();
+		loginPage.ShowPassword.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
+		System.out.println(loginPage.PassWord.getAttribute("type"));
+		AssertJUnit.assertEquals("The password is not masked", loginPage.PassWord.getAttribute("type").equals("text"),
+				true);
+	}
+
+	/**
 	 * This test checks the login function with Username Less Than Six Character and
 	 * valid, invalid, empty password. This test is data driven, it checks the login
 	 * with multiple data through dataprovider.

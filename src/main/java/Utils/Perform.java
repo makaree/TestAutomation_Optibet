@@ -178,6 +178,7 @@ public class Perform {
 				By.cssSelector("#casino-modal-container > div > div > div.result___3X9jF-scss")));
 		wait.until(ExpectedConditions
 				.visibilityOfElementLocated(By.xpath("//*[@id=\"casino-modal-container\"]/div/div/div[2]/div[1]")));
+		System.out.println("The game to be loaded is:" + gameName);
 		String searchresultnos_str = js.executeScript(
 				"return document.querySelectorAll('#casino-modal-container > div > div > div.result___3X9jF-scss')[0].childElementCount;")
 				.toString();
@@ -196,13 +197,8 @@ public class Perform {
 			modifygameName = modifygameName.toLowerCase();
 			modifygameName = modifygameName.replace(" ", "");
 			modifygameName = modifygameName.replace("'", "");
-			System.out.println(modifygameName);
-			System.out.println(findgameName[j]);
 			if (findgameName[j].equals(modifygameName)) {
-				System.out.println(modifygameName);
-				System.out.println(findgameName[j]);
 				k = j + 1;
-				System.out.println(k);
 			}
 		}
 		driver.findElement(By.xpath("//*[@id=\"casino-modal-container\"]/div/div/div[2]/div[" + k + "]")).click();
@@ -236,7 +232,7 @@ public class Perform {
 
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -268,11 +264,10 @@ public class Perform {
 		SessionExpiredWindow sessionExpired = new SessionExpiredWindow(driver);
 		try {
 			if (sessionExpired.SessionExpiredWindow.isDisplayed() == true) {
-				System.out.println("Found the element");
 				sessionExpired.SessionExpiredWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
@@ -296,7 +291,7 @@ public class Perform {
 
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(
 				"#topBar > div.page-content___3oo_o-scss.topBarContent___3cr_D-scss > div.main___2Aq79-scss > div > span.container___1dsKe-scss.undefined > a")));
@@ -404,29 +399,26 @@ public class Perform {
 		LoginWindow loginPage = new LoginWindow(driver);
 		try {
 			if (loginPage.LoginDialogueWindow.isDisplayed() == true) {
-				System.out.println("Found the element");
 				loginPage.LoginWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 		LoginPageResponse loginPageResponse = new LoginPageResponse(driver);
 		try {
 			if (loginPageResponse.LogOut.isDisplayed() == true) {
-				System.out.println("Found the element");
 				loginPageResponse.LogOut.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 		SessionExpiredWindow sessionExpired = new SessionExpiredWindow(driver);
 		try {
 			if (sessionExpired.SessionExpiredWindow.isDisplayed() == true) {
-				System.out.println("Found the element");
 				sessionExpired.SessionExpiredWindowClose.click();
 			}
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			System.out.println("No such element was present" + e.getMessage());
+			e.printStackTrace();
 		}
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"topBar\"]/div[1]/div[2]")));

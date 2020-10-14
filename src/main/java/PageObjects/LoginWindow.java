@@ -51,7 +51,7 @@ public class LoginWindow {
 	public WebElement PassWordFieldError;
 
 	/// This element find the show password field in the Login Dialogue Window
-	@FindBy(css = "#app > div.container___hBWrc-scss.oblt > main > div.dialog__container___2uP4v-scss > div > div > form > div.container___iXaqk-scss > div.eye___1io_l-scss > svg > g > path")
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/main/div[2]/div/div/form/div[2]/div[2]")
 	public WebElement ShowPassword;
 
 	/// This element find the LoginButton in the Login Dialogue Window
